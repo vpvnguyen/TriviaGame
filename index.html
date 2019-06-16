@@ -18,13 +18,13 @@
 <!-- game content -->
 <body>
     <div class="container">
-        <button id="start" type="button" class="btn btn-primary">Primary</button>
+        <div class="row">
+            <button id="start" type="button" class="btn btn-primary">Primary</button>
+        </div>
     </div>
-
-
-
     <!-- game Logic -->
     <script>
+
 // You'll create a trivia game that shows only one question until the player answers it or their time runs out.
 
 // If the player selects the correct answer, show a screen congratulating them for choosing the right option. After a few seconds, display the next question -- do this without user input.
@@ -40,16 +40,13 @@
 $(document).ready(function(){
 
 // start the game when user clicks on Start button
-$('#start').on('click', object.startSlideShow);
+$('#start').on('click', object.runGame);
 
 });
 
-
-
-
-
 // object
 var object = {
+    // array of game content
     array: [
         {
             question1: 'Which pokemon does Pikachu evolve into?',
@@ -102,16 +99,26 @@ var object = {
             answer10: 'shellder'
         },
     ],
-    gameVar: {
-        showTime: 0
+    // time function:
+    count: 0,
+    reset: function() {
+        this.count = 0; // resets variables
     },
+    // game functions
     startTime: function() {
-        console.log('start time');
+        console.log('startTime() executed');
+        this.count++;
+        console.log(this.count);
+        if (this.count === 3) {
+            this.reset(); // check reset above
+            console.log('times up!');
+        }
     },
-    startSlideShow: function() {
+    runGame: function() {
+        console.log('runGame() executed');
         // TODO: Use showImage to hold the setInterval to run nextImage.
-        var showTime = setInterval(function(){
-        object.startTime();
+        var showTime = setInterval(function() {
+        object.startTime(); // check startTime above
         }, 3000);
     }
 }
