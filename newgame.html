@@ -24,63 +24,102 @@
         </div>
     </div>
     <!-- game Logic -->
-    <script>
-    var object = {
+<script>
+var game = {
     // array of game content
     array: [
         {
-            question1: 'Which pokemon does Pikachu evolve into?',
-            option1: ['mewtwo', 'pichu', 'raichu', 'pachinko'],
-            answer1: 'raichu'
+            question: 'Which pokemon does Pikachu evolve into?',
+            option: ['mewtwo', 'pichu', 'raichu', 'pachinko'],
+            answer: 'raichu'
         },
         {
-            question2: 'What\'s the most effective Poke Ball in the game',
-            option2: ['timer ball', 'ultra ball', 'a pikachu', 'master ball'],
-            answer2: 'master ball'
+            question: 'What\'s the most effective Poke Ball in the game',
+            option: ['count ball', 'ultra ball', 'a pikachu', 'master ball'],
+            answer: 'master ball'
         },
         {
-            question3: 'Which was the first gym leader that beated Ash?',
-            option3: ['brock', 'misty', 'giovanni', 'erika'],
-            answer3: 'brock'
+            question: 'Which was the first gym leader that beated Ash?',
+            option: ['brock', 'misty', 'giovanni', 'erika'],
+            answer: 'brock'
         },
         {
-            question4: 'Which was the first pokemon that was released from Ash?',
-            option4: ['pidgeot', 'buterfree', 'pikachu', 'lapras'],
-            answer4: 'buterfree'
+            question: 'Which was the first pokemon that was released from Ash?',
+            option: ['pidgeot', 'buterfree', 'pikachu', 'lapras'],
+            answer: 'buterfree'
         },
         {
-            question5: 'How many Gym Badges must a trainer collect before challenging the Elite Four?',
-            option5: ['4', '6', '8', '9'],
-            answer5: '8'
+            question: 'How many Gym Badges must a trainer collect before challenging the Elite Four?',
+            option: ['4', '6', '8', '9'],
+            answer: '8'
         },
         {
-            question6: 'What was the first pokemon ever created?', 
-            option6: ['bulbasaur', 'charmander', 'rhydon', 'pikachu'], 
-            answer6: 'rhydon'
+            question: 'What was the first pokemon ever created?', 
+            option: ['bulbasaur', 'charmander', 'rhydon', 'pikachu'], 
+            answer: 'rhydon'
         },
         {
-            question7: 'Which pokemon has the same cry as Charizard in games?',
-            option7: ['mewtwo', 'rhyhorn', 'dragonite', 'lugia'],
-            answer7: 'rhyhorn'
+            question: 'Which pokemon has the same cry as Charizard in games?',
+            option: ['mewtwo', 'rhyhorn', 'dragonite', 'lugia'],
+            answer: 'rhyhorn'
         },
         {
-            question8: 'Which pokemon is the longest one to hatch from an egg?',
-            option8: ['dratini', 'onix', 'pikachu', 'venomoth'],
-            anwer8: 'onix'
+            question: 'Which pokemon is the longest one to hatch from an egg?',
+            option: ['dratini', 'onix', 'pikachu', 'venomoth'],
+            answer: 'onix'
         },
         {
-            question9: 'Which is the lightest pokemon?',
-            option9: ['metapod', 'pikachu', 'ghastly', 'caterpie'],
-            answer9: 'ghastly'
+            question: 'Which is the lightest pokemon?',
+            option: ['metapod', 'pikachu', 'ghastly', 'caterpie'],
+            answer: 'ghastly'
         },
         {
-            question10: 'What food do Kinglers mainly eat?',
-            option10: ['pikachu', 'krabby', 'shellder', 'magikarp'],
-            answer10: 'shellder'
-        },
-    ]
-    }
-    console.log(object.array);
-    </script>
+            question: 'What food do Kinglers mainly eat?',
+            option: ['pikachu', 'krabby', 'shellder', 'magikarp'],
+            answer: 'shellder'
+        }
+    ],
+    next: function() {
+        console.log('next()');
+        $('#content').append(`<div>yo`);
+    },
+
+    timer: function() {
+        count--; //lose a timer
+        console.log(count);
+
+        $('#content').text(`00:0${count}`); // show count left
+
+        if (count === 0 && round === true) { // if time is out and game/round is live
+            console.log('round true');
+            clearInterval(count); // clear the interval that was ran
+            console.log(clearInterval(count));
+            console.log('advance to loading screen')
+            // nextPage(); // advance next round
+            game.next();
+        } else if (count === 0 && round === false) { // if time is out and game / round is not live
+            console.log('round false');
+            clearInterval(clock); // clear the interval that was ran
+            // go to next round
+            game.next();            
+        }
+    },
+    start: function() {
+        clock = setInterval(game.timer, 1000); // for every second, run timer
+    },
+    run: function() {
+        // start count
+        count = 5;
+        round = false;
+        console.log(Object.values(game.array[0]));
+        game.start();
+    },
+
+};
+console.log(game.array);
+$(document).ready(function() {
+    $('#start').on('click', game.run);
+});
+</script>
 </body>
 </html>
