@@ -21,6 +21,8 @@
         <div class="row">
             <button id="start" type="button" class="btn btn-primary">start</button>
             <div id="content"></div>
+            <div id="content2"></div>
+
         </div>
     </div>
     <!-- game Logic -->
@@ -79,29 +81,52 @@ var game = {
             answer: 'shellder'
         }
     ],
-    next: function() {
-        console.log('next()');
-        $('#content').append(`<div>yo`);
-    },
+    nextPage: function() {
+        round = false; // declare that round isnt running
+        $('#content').empty(); // clear out content
+        count = 3; // set interval to 3 secs to run on this page
+        $('#content').append(`<div id='content' class='display-2'>00:03`); // display 3 second timer
 
+        // restart timer and check which round to advance
+        game.start();
+    },
+    nextRound: function() {
+        round = true;
+        $('#content').empty();
+        questionNum = 0;
+
+        console.log('nextRound');
+        $('#content').append(`<div id='countDown' class='display-2'>00:10`); // show timer
+        
+        // loop through object of questions and display possible options
+        
+        for (var i = 0; i < Object.values(game.array[questionNum])[1].length; i++) {
+            console.log(`${Object.values(game.array[questionNum])[1][i]}`)
+            $('#content2').append(`<button id='poss${i}' class='btn btn-primary btn-lg'>${Object.values(game.array[questionNum])[1][i]}`);
+        }   
+
+        // increment to next question each time this function is ran
+        questionNum++;
+        game.start();
+    },
     timer: function() {
         count--; //lose a timer
-        console.log(count);
-
+        console.log(count)
         $('#content').text(`00:0${count}`); // show count left
 
         if (count === 0 && round === true) { // if time is out and game/round is live
             console.log('round true');
             clearInterval(count); // clear the interval that was ran
             console.log(clearInterval(count));
-            console.log('advance to loading screen')
+            console.log('advance to loading screen');
             // nextPage(); // advance next round
-            game.next();
+            game.nextPage();
         } else if (count === 0 && round === false) { // if time is out and game / round is not live
             console.log('round false');
             clearInterval(clock); // clear the interval that was ran
             // go to next round
-            game.next();            
+            game.nextRound();
+
         }
     },
     start: function() {
@@ -114,7 +139,6 @@ var game = {
         console.log(Object.values(game.array[0]));
         game.start();
     },
-
 };
 console.log(game.array);
 $(document).ready(function() {
