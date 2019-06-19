@@ -92,8 +92,8 @@ var game = {
     },
     nextRound: function() {
         round = true;
+        count = 10;
         $('#content').empty();
-        questionNum = 0;
 
         console.log('nextRound');
         $('#content').append(`<div id='countDown' class='display-2'>00:10`); // show timer
@@ -102,7 +102,7 @@ var game = {
         
         for (var i = 0; i < Object.values(game.array[questionNum])[1].length; i++) {
             console.log(`${Object.values(game.array[questionNum])[1][i]}`)
-            $('#content2').append(`<button id='poss${i}' class='btn btn-primary btn-lg'>${Object.values(game.array[questionNum])[1][i]}`);
+            $('#content').append(`<button id='poss${i}' class='btn btn-primary btn-lg'>${Object.values(game.array[questionNum])[1][i]}`);
         }   
 
         // increment to next question each time this function is ran
@@ -135,10 +135,12 @@ var game = {
     run: function() {
         // start count
         count = 5;
+        questionNum = 0;
         round = false;
-        console.log(Object.values(game.array[0]));
         game.start();
     },
+    
+
 };
 console.log(game.array);
 $(document).ready(function() {
