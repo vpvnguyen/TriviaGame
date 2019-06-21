@@ -155,7 +155,6 @@ var game = {
             game.nextRound();
         }
         $('#game-timer').text(`00:0${count}`); // show count left
-
     },
     startTimer: function() {
         clock = setInterval(game.timer, 1000); // for every second, run timer
@@ -163,6 +162,7 @@ var game = {
     play: function() {
         questionNum = 0;
         round = false;
+        isCorrect = false;
         correct = 0;
         incorrect = 0;
         $('#start').hide();
