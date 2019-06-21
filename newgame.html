@@ -20,6 +20,7 @@
     <div class="container">
         <div class="row">
             <button id="start" type="button" class="btn btn-primary">start</button>
+            <!-- <div id="game-timer"></div> -->
             <div id="content"></div>
         </div>
     </div>
@@ -35,7 +36,7 @@ var game = {
         },
         {
             question: 'What\'s the most effective Poke Ball in the game',
-            option: ['count ball', 'ultra ball', 'a pikachu', 'master ball'],
+            option: ['poke ball', 'ultra ball', 'a pikachu', 'master ball'],
             answer: 'master ball'
         },
         {
@@ -83,7 +84,7 @@ var game = {
         round = false; // declare that round isnt running
         $('#content').empty(); // clear out content
         count = 3; // set interval to 3 secs to run on this page
-        $('#content').append(`<div id='content' class='display-2'>00:03`); // display 3 second timer
+        $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`); // display 3 second timer
 
         // restart timer and check which round to advance
         game.start();
@@ -94,14 +95,14 @@ var game = {
         $('#content').empty();
 
         console.log('nextRound');
-        $('#content').append(`<div id='countDown' class='display-2'>00:10`); // show timer
-        
+        $('#content').append(`<div id='game-timer' class='display-2'>00:03`); // show timer
+        $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`);
+
         // loop through object of questions and display possible options
-        
         for (var i = 0; i < Object.values(game.array[questionNum])[1].length; i++) {
             console.log(`${Object.values(game.array[questionNum])[1][i]}`)
-            $('#content').append(`<button id='poss${i}' class='btn btn-primary btn-lg'>${Object.values(game.array[questionNum])[1][i]}`);
-        }   
+            $('#content').append(`<button id='option-${i}' class='btn btn-primary btn-lg'>${Object.values(game.array[questionNum])[1][i]}`);
+        }
 
         // increment to next question each time this function is ran
         questionNum++;
@@ -110,12 +111,12 @@ var game = {
     timer: function() {
         count--; //lose a timer
         console.log(count)
-        $('#content').text(`00:0${count}`); // show count left
+        $('#game-timer').text(`00:0${count}`); // show count left
 
         if (count === 0 && round === true) { // if time is out and game/round is live
             console.log('round true');
-            clearInterval(count); // clear the interval that was ran
-            console.log(clearInterval(count));
+            clearInterval(clock); // clear the interval that was ran
+            console.log(clearInterval(clock));
             console.log('advance to loading screen');
             // nextPage(); // advance next round
             game.nextPage();
@@ -124,7 +125,6 @@ var game = {
             clearInterval(clock); // clear the interval that was ran
             // go to next round
             game.nextRound();
-
         }
     },
     start: function() {
@@ -136,9 +136,7 @@ var game = {
         questionNum = 0;
         round = false;
         game.start();
-    },
-    
-
+    }
 };
 console.log(game.array);
 $(document).ready(function() {
