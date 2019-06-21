@@ -22,6 +22,7 @@
             <button id="start" type="button" class="btn btn-primary">start</button>
             <!-- <div id="game-timer"></div> -->
             <div id="content"></div>
+            
         </div>
     </div>
     <!-- game Logic -->
@@ -32,7 +33,8 @@ var game = {
         {
             question: 'Which pokemon does Pikachu evolve into?',
             option: ['mewtwo', 'pichu', 'raichu', 'pachinko'],
-            answer: 'raichu'
+            answer: 'raichu',
+            img: 'https://i.imgur.com/m6kX7LO.gif'
         },
         {
             question: 'What\'s the most effective Poke Ball in the game',
@@ -80,67 +82,96 @@ var game = {
             answer: 'shellder'
         }
     ],
+    // checks if button press is correct
+    check: function() {
+        buttonVal = $(this).attr('value');
+        console.log(buttonVal);
+        console.log(triviaAnswer);
+        if (buttonVal === triviaAnswer) {
+            correct++;
+            console.log(`Correct: ${correct}`);
+            isCorrect = true;
+
+        } else {
+            incorrect++;
+            console.log(`Incorrect: ${incorrect}`);
+            isCorrect = false;
+        }
+        clearInterval(clock)
+        game.nextPage(); // PAUSING THE GAME TO WORK ON DOM
+    },
+    // show page after player win or lose
     nextPage: function() {
         round = false; // declare that round isnt running
         $('#content').empty(); // clear out content
         count = 3; // set interval to 3 secs to run on this page
-        $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`); // display 3 second timer
 
-        // restart timer and check which round to advance
-        game.start();
+        // win or lose
+        if (isCorrect) {
+            $('#content').append(`<img src="${triviaIMG}" alt="">`);
+        } else {
+            $('#content').append(`<img src="https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649" alt="">`);
+
+        }
+        game.startTimer();
     },
+    // advance to next round
     nextRound: function() {
         round = true;
-        count = 10;
+        count = 5;
         $('#content').empty();
-
-        console.log('nextRound');
-        $('#content').append(`<div id='game-timer' class='display-2'>00:03`); // show timer
+        $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`); // display 3 second timer
         $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`);
 
         // loop through object of questions and display possible options
-        for (var i = 0; i < Object.values(game.array[questionNum])[1].length; i++) {
-            console.log(`${Object.values(game.array[questionNum])[1][i]}`)
-            $('#content').append(`<button id='option-${i}' class='btn btn-primary btn-lg'>${Object.values(game.array[questionNum])[1][i]}`);
+        triviaQuestion = Object.values(game.array[questionNum])[1];
+        triviaAnswer = Object.values(game.array[questionNum])[2];
+        triviaIMG = Object.values(game.array[questionNum])[3];
+        for (var i = 0; i < triviaQuestion.length; i++) {
+            console.log(`${triviaQuestion[i]}`);
+            $('#content').append(`<button id='option-${i}' class='option btn btn-primary btn-lg' value="${triviaQuestion[i]}">${triviaQuestion[i]}`);
         }
+        $('button').on('click', game.check);
 
         // increment to next question each time this function is ran
         questionNum++;
-        game.start();
+        game.startTimer();
     },
     timer: function() {
+        console.log(count);
         count--; //lose a timer
-        console.log(count)
-        $('#game-timer').text(`00:0${count}`); // show count left
 
         if (count === 0 && round === true) { // if time is out and game/round is live
             console.log('round true');
             clearInterval(clock); // clear the interval that was ran
-            console.log(clearInterval(clock));
-            console.log('advance to loading screen');
+            console.log('cleared clock');
             // nextPage(); // advance next round
             game.nextPage();
         } else if (count === 0 && round === false) { // if time is out and game / round is not live
             console.log('round false');
             clearInterval(clock); // clear the interval that was ran
+            console.log('cleared clock');
             // go to next round
             game.nextRound();
         }
+        $('#game-timer').text(`00:0${count}`); // show count left
+
     },
-    start: function() {
+    startTimer: function() {
         clock = setInterval(game.timer, 1000); // for every second, run timer
     },
-    run: function() {
-        // start count
-        count = 5;
+    play: function() {
         questionNum = 0;
         round = false;
-        game.start();
+        correct = 0;
+        incorrect = 0;
+        $('#start').hide();
+        game.nextRound();
     }
 };
 console.log(game.array);
 $(document).ready(function() {
-    $('#start').on('click', game.run);
+    $('#start').on('click', game.play);
 });
 </script>
 </body>
