@@ -78,9 +78,25 @@
         console.log(game.array[i].option)
         console.log(game.array[i].answer)
         // $('#content').append(`<div id="DIV-${i}">${game.array[i].question}`);
-        $('#content').append(`<button id="Q-${i}">${game.array[i][i]}`);
 
     }
+    $('#content').append(`<button id="Q-${i}">${game.array[1].question}`);
+    var question = game.array[1].question;
+    var answer = game.array[1].answer;
+    var option = game.array[1].option[3];
+    console.log(question);
+    console.log(option);
+    console.log(answer);
+
+    if (option === answer) {
+        console.log('match!');
+    } else {
+        console.log('NO MATCH, FAIL')
+    }
+
+
+
+
     </script>
 </body>
 </html>
