@@ -81,9 +81,14 @@ var game = {
             answer: 'shellder'
         }
     ],
+    gameOver: function() {
+        $('#content').empty();
+        $('#content').text('GAME OVER');
+    },
     // checks if button press is correct
     check: function() {
         buttonVal = $(this).attr('value');
+
         if (buttonVal === triviaAnswer) {
             correct++;
             console.log(`Correct: ${correct}`);
@@ -122,12 +127,13 @@ var game = {
         // display timer and question
         $('#content').empty();
         $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`); // display 3 second timer
-        $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`);
+        $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`); //2
 
         // define and loop through array of questions
         triviaQuestion = Object.values(game.array[questionNum])[1];
         triviaAnswer = Object.values(game.array[questionNum])[2];
         triviaIMG = Object.values(game.array[questionNum])[3];
+        console.log(`\nRound: ${questionNum}`);
         for (var i = 0; i < triviaQuestion.length; i++) {
             console.log(`${triviaQuestion[i]}`);
             $('#content').append(`<button id='option-${i}' class='option btn btn-primary btn-lg' value="${triviaQuestion[i]}">${triviaQuestion[i]}`);
@@ -136,10 +142,17 @@ var game = {
         // when player presses an option button, check if answer is correct
         $('button').on('click', game.check);
 
-        // increment to advance to next question; restart timer
-        questionNum++;
-        game.startTimer();
-    },
+        if (questionNum === game.array.length) {
+            console.log('GG');
+            console.log(questionNum + '|' +     console.oog(game.array.length));
+            clearInterval(clock);
+            game.gameOver();
+        } else {
+            // increment to advance to next question; restart timer
+            questionNum++;
+            game.startTimer();        
+        }
+    }, 
     timer: function() {
         // lose a count each turn
         console.log(count);
@@ -147,11 +160,15 @@ var game = {
 
         // if count reaches 0, stop the clock, and advance to proper page
         if (count === 0 && round === true) {
+            console.log(round)
+            incorrect++;
+            console.log(`Times up | Incorrect: ${incorrect}`);
             clearInterval(clock);
             game.nextPage();
         } else if (count === 0 && round === false) {
-            console.log('round false');
-            clearInterval(clock);
+            console.log(round)
+            console.log(`Times up | Incorrect: ${incorrect}`);
+            clearInterval(clock); //1
             game.nextRound();
         }
 
@@ -178,6 +195,8 @@ var game = {
 $(document).ready(function() {
     $('#start').on('click', game.play);
 });
+
+// 170 -> 130; error game end;
 </script>
 </body>
 </html>
