@@ -84,44 +84,47 @@ var game = {
     // checks if button press is correct
     check: function() {
         buttonVal = $(this).attr('value');
-        console.log(buttonVal);
-        console.log(triviaAnswer);
         if (buttonVal === triviaAnswer) {
             correct++;
             console.log(`Correct: ${correct}`);
             isCorrect = true;
-
         } else {
             incorrect++;
             console.log(`Incorrect: ${incorrect}`);
             isCorrect = false;
         }
         clearInterval(clock)
-        game.nextPage(); // PAUSING THE GAME TO WORK ON DOM
+        game.nextPage(); // comment out to pause the game
     },
     // show page after player win or lose
     nextPage: function() {
-        round = false; // declare that round isnt running
-        $('#content').empty(); // clear out content
-        count = 3; // set interval to 3 secs to run on this page
+        // delare that round is not running; set interval to 3; clear content DOM
+        round = false;
+        count = 3;
+        $('#content').empty();
 
-        // win or lose
+        // check if answer is correct
         if (isCorrect) {
-            $('#content').append(`<img src="${triviaIMG}" alt="">`);
+            $('#content').append(`<img src="${triviaIMG}" alt="Win Image">`);
         } else {
-            $('#content').append(`<img src="https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649" alt="">`);
+            $('#content').append(`<img src="https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649" alt="Lose Image">`);
         }
+
+        // restart timer
         game.startTimer();
     },
     // advance to next round
     nextRound: function() {
+        // declare that round is running, start count at 5
         round = true;
         count = 5;
+
+        // display timer and question
         $('#content').empty();
         $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`); // display 3 second timer
         $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`);
 
-        // loop through object of questions and display possible options
+        // define and loop through array of questions
         triviaQuestion = Object.values(game.array[questionNum])[1];
         triviaAnswer = Object.values(game.array[questionNum])[2];
         triviaIMG = Object.values(game.array[questionNum])[3];
@@ -129,34 +132,37 @@ var game = {
             console.log(`${triviaQuestion[i]}`);
             $('#content').append(`<button id='option-${i}' class='option btn btn-primary btn-lg' value="${triviaQuestion[i]}">${triviaQuestion[i]}`);
         }
+
+        // when player presses an option button, check if answer is correct
         $('button').on('click', game.check);
 
-        // increment to next question each time this function is ran
+        // increment to advance to next question; restart timer
         questionNum++;
         game.startTimer();
     },
     timer: function() {
+        // lose a count each turn
         console.log(count);
-        count--; //lose a timer
+        count--;
 
-        if (count === 0 && round === true) { // if time is out and game/round is live
-            console.log('round true');
-            clearInterval(clock); // clear the interval that was ran
-            console.log('cleared clock');
-            // nextPage(); // advance next round
+        // if count reaches 0, stop the clock, and advance to proper page
+        if (count === 0 && round === true) {
+            clearInterval(clock);
             game.nextPage();
-        } else if (count === 0 && round === false) { // if time is out and game / round is not live
+        } else if (count === 0 && round === false) {
             console.log('round false');
-            clearInterval(clock); // clear the interval that was ran
-            console.log('cleared clock');
-            // go to next round
+            clearInterval(clock);
             game.nextRound();
         }
-        $('#game-timer').text(`00:0${count}`); // show count left
+
+        // display time
+        $('#game-timer').text(`00:0${count}`);
     },
+    // starts a 1 sec interval
     startTimer: function() {
         clock = setInterval(game.timer, 1000); // for every second, run timer
     },
+    // start game; define variables
     play: function() {
         questionNum = 0;
         round = false;
@@ -167,7 +173,8 @@ var game = {
         game.nextRound();
     }
 };
-console.log(game.array);
+
+// when user presses start, play game
 $(document).ready(function() {
     $('#start').on('click', game.play);
 });
