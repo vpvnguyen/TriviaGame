@@ -20,128 +20,157 @@
     <div class="container">
         <div class="row">
             <button id="start" type="button" class="btn btn-primary">start</button>
+            <!-- <div id="game-timer"></div> -->
             <div id="content"></div>
         </div>
     </div>
     <!-- game Logic -->
-    <script>
-
-// You'll create a trivia game that shows only one question until the player answers it or their time runs out.
-
-// If the player selects the correct answer, show a screen congratulating them for choosing the right option. After a few seconds, display the next question -- do this without user input.
-// The scenario is similar for wrong answers and time-outs.
-
-// If the player runs out of time, tell the player that time's up and display the correct answer. Wait a few seconds, then show the next question.
-// If the player chooses the wrong answer, tell the player they selected the wrong option and then display the correct answer. Wait a few seconds, then show the next question.
-
-// On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
-
-// game
-// create a start button
-$(document).ready(function(){
-
-// start the game when user clicks on Start button
-$('#start').on('click', object.runGame);
-
-});
-
-// object
-var object = {
+<script>
+var game = {
     // array of game content
     array: [
         {
-            question1: 'Which pokemon does Pikachu evolve into?',
-            option1: ['mewtwo', 'pichu', 'raichu', 'pachinko'],
-            answer1: 'raichu'
+            question: 'Which pokemon does Pikachu evolve into?',
+            option: ['mewtwo', 'pichu', 'raichu', 'pachinko'],
+            answer: 'raichu',
+            img: 'https://i.imgur.com/m6kX7LO.gif'
         },
         {
-            question2: 'What\'s the most effective Poke Ball in the game',
-            option2: ['timer ball', 'ultra ball', 'a pikachu', 'master ball'],
-            answer2: 'master ball'
+            question: 'What\'s the most effective Poke Ball in the game',
+            option: ['poke ball', 'ultra ball', 'a pikachu', 'master ball'],
+            answer: 'master ball'
         },
         {
-            question3: 'Which was the first gym leader that beated Ash?',
-            option3: ['brock', 'misty', 'giovanni', 'erika'],
-            answer3: 'brock'
+            question: 'Which was the first gym leader that beated Ash?',
+            option: ['brock', 'misty', 'giovanni', 'erika'],
+            answer: 'brock'
         },
         {
-            question4: 'Which was the first pokemon that was released from Ash?',
-            option4: ['pidgeot', 'buterfree', 'pikachu', 'lapras'],
-            answer4: 'buterfree'
+            question: 'Which was the first pokemon that was released from Ash?',
+            option: ['pidgeot', 'buterfree', 'pikachu', 'lapras'],
+            answer: 'buterfree'
         },
         {
-            question5: 'How many Gym Badges must a trainer collect before challenging the Elite Four?',
-            option5: ['4', '6', '8', '9'],
-            answer5: '8'
+            question: 'How many Gym Badges must a trainer collect before challenging the Elite Four?',
+            option: ['4', '6', '8', '9'],
+            answer: '8'
         },
         {
-            question6: 'What was the first pokemon ever created?', 
-            option6: ['bulbasaur', 'charmander', 'rhydon', 'pikachu'], 
-            answer6: 'rhydon'
+            question: 'What was the first pokemon ever created?', 
+            option: ['bulbasaur', 'charmander', 'rhydon', 'pikachu'], 
+            answer: 'rhydon'
         },
         {
-            question7: 'Which pokemon has the same cry as Charizard in games?',
-            option7: ['mewtwo', 'rhyhorn', 'dragonite', 'lugia'],
-            answer7: 'rhyhorn'
+            question: 'Which pokemon has the same cry as Charizard in games?',
+            option: ['mewtwo', 'rhyhorn', 'dragonite', 'lugia'],
+            answer: 'rhyhorn'
         },
         {
-            question8: 'Which pokemon is the longest one to hatch from an egg?',
-            option8: ['dratini', 'onix', 'pikachu', 'venomoth'],
-            anwer8: 'onix'
+            question: 'Which pokemon is the longest one to hatch from an egg?',
+            option: ['dratini', 'onix', 'pikachu', 'venomoth'],
+            answer: 'onix'
         },
         {
-            question9: 'Which is the lightest pokemon?',
-            option9: ['metapod', 'pikachu', 'ghastly', 'caterpie'],
-            answer9: 'ghastly'
+            question: 'Which is the lightest pokemon?',
+            option: ['metapod', 'pikachu', 'ghastly', 'caterpie'],
+            answer: 'ghastly'
         },
         {
-            question10: 'What food do Kinglers mainly eat?',
-            option10: ['pikachu', 'krabby', 'shellder', 'magikarp'],
-            answer10: 'shellder'
-        },
-    ],
-    // time function:
-    count: 0,
-    reset: function() {
-        this.count = 0; // resets variables
-    },
-    // dom manipulation
-    showContent: function() {
-        console.log('showContent - executed');
-        $('#content').html();
-
-    },
-    // game functions
-    startTime: function() {
-        console.log('startTime() executed');
-        this.count++;
-        console.log(this.count);
-        if (this.count === 3) {
-            this.reset(); // check reset above
-            console.log('times up!');
+            question: 'What food do Kinglers mainly eat?',
+            option: ['pikachu', 'krabby', 'shellder', 'magikarp'],
+            answer: 'shellder'
         }
+    ],
+    // checks if button press is correct
+    check: function() {
+        buttonVal = $(this).attr('value');
+        console.log(buttonVal);
+        console.log(triviaAnswer);
+        if (buttonVal === triviaAnswer) {
+            correct++;
+            console.log(`Correct: ${correct}`);
+            isCorrect = true;
+
+        } else {
+            incorrect++;
+            console.log(`Incorrect: ${incorrect}`);
+            isCorrect = false;
+        }
+        clearInterval(clock)
+        game.nextPage(); // PAUSING THE GAME TO WORK ON DOM
     },
-    runGame: function() {
-        console.log('runGame() executed');
-        // TODO: Use showImage to hold the setInterval to run nextImage.
-        var showTime = setInterval(function() {
-        object.startTime(); // check startTime above
-        object.showContent();
-        }, 3000);
+    // show page after player win or lose
+    nextPage: function() {
+        round = false; // declare that round isnt running
+        $('#content').empty(); // clear out content
+        count = 3; // set interval to 3 secs to run on this page
+
+        // win or lose
+        if (isCorrect) {
+            $('#content').append(`<img src="${triviaIMG}" alt="">`);
+        } else {
+            $('#content').append(`<img src="https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649" alt="">`);
+        }
+        game.startTimer();
+    },
+    // advance to next round
+    nextRound: function() {
+        round = true;
+        count = 5;
+        $('#content').empty();
+        $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`); // display 3 second timer
+        $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`);
+
+        // loop through object of questions and display possible options
+        triviaQuestion = Object.values(game.array[questionNum])[1];
+        triviaAnswer = Object.values(game.array[questionNum])[2];
+        triviaIMG = Object.values(game.array[questionNum])[3];
+        for (var i = 0; i < triviaQuestion.length; i++) {
+            console.log(`${triviaQuestion[i]}`);
+            $('#content').append(`<button id='option-${i}' class='option btn btn-primary btn-lg' value="${triviaQuestion[i]}">${triviaQuestion[i]}`);
+        }
+        $('button').on('click', game.check);
+
+        // increment to next question each time this function is ran
+        questionNum++;
+        game.startTimer();
+    },
+    timer: function() {
+        console.log(count);
+        count--; //lose a timer
+
+        if (count === 0 && round === true) { // if time is out and game/round is live
+            console.log('round true');
+            clearInterval(clock); // clear the interval that was ran
+            console.log('cleared clock');
+            // nextPage(); // advance next round
+            game.nextPage();
+        } else if (count === 0 && round === false) { // if time is out and game / round is not live
+            console.log('round false');
+            clearInterval(clock); // clear the interval that was ran
+            console.log('cleared clock');
+            // go to next round
+            game.nextRound();
+        }
+        $('#game-timer').text(`00:0${count}`); // show count left
+    },
+    startTimer: function() {
+        clock = setInterval(game.timer, 1000); // for every second, run timer
+    },
+    play: function() {
+        questionNum = 0;
+        round = false;
+        isCorrect = false;
+        correct = 0;
+        incorrect = 0;
+        $('#start').hide();
+        game.nextRound();
     }
-}
-
-// console.log(object)
-// console.log(typeof object)
-// console.log(object[0])
-// console.log(typeof object[0])
-// console.log(object[0].q1)
-// console.log(object[0].op1)
-// console.log(object[0].a1)
-
-
-
-
-    </script>
+};
+console.log(game.array);
+$(document).ready(function() {
+    $('#start').on('click', game.play);
+});
+</script>
 </body>
 </html>
