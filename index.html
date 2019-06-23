@@ -81,9 +81,6 @@ var game = {
             answer: 'shellder'
         }
     ],
-    // correct: 0,
-    // incorrect: 0,
-    // round: false,
     gameOver: function() {
         clearInterval(clock);
         $('#content').empty();
@@ -110,10 +107,10 @@ var game = {
             isCorrect = false;
         }
         clearInterval(clock);
-        game.nextPage(); // comment out to pause the game
+        game.results(); // comment out to pause the game
     },
     // show page after player win or lose
-    nextPage: function() {
+    results: function() {
         // delare that round is not running; set interval to 3; clear content DOM
         round = false;
         count = 3;
@@ -130,15 +127,15 @@ var game = {
         game.startTimer();
     },
     // advance to next round
-    nextRound: function() {
+    round: function() {
         // declare that round is running, start count at 5
         round = true;
         count = 5;
 
         // display timer and question
         $('#content').empty();
-        $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`); // display 3 second timer
-        $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`); //2
+        $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`);
+        $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`);
 
         // define and loop through array of questions
         triviaQuestion = Object.values(game.array[questionNum])[1];
@@ -164,9 +161,9 @@ var game = {
             questionNum++;
             game.startTimer();
         }
-    }, 
-    timer: function() {
-        // lose a count each turn
+    },
+    // start counting down; choose game state when timer hits 0
+    countdown: function() {
         console.log(count);
         count--;
 
@@ -180,13 +177,13 @@ var game = {
             incorrect++;
             console.log(`Times up | isCorrect: ${isCorrect} | Incorrect: ${incorrect}`);
             clearInterval(clock);
-            game.nextPage();
+            game.results();
         } else if (count === 0 && round === false) {
             isCorrect = false;
             console.log(round);
             console.log(`Times up | isCorrect: ${isCorrect} | Incorrect: ${incorrect}`);
-            clearInterval(clock); //1
-            game.nextRound();
+            clearInterval(clock);
+            game.round();
         }
 
         // display time
@@ -194,7 +191,7 @@ var game = {
     },
     // starts a 1 sec interval
     startTimer: function() {
-        clock = setInterval(game.timer, 1000); // for every second, run timer
+        clock = setInterval(game.countdown, 1000); // for every second, run timer
     },
     // start game; define variables
     play: function() {
@@ -204,7 +201,7 @@ var game = {
         correct = 0;
         incorrect = 0;
         $('#start').hide();
-        game.nextRound();
+        game.round();
     }
 };
 
