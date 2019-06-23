@@ -81,9 +81,20 @@ var game = {
             answer: 'shellder'
         }
     ],
+    // correct: 0,
+    // incorrect: 0,
+    // round: false,
     gameOver: function() {
+        clearInterval(clock);
         $('#content').empty();
-        $('#content').text('GAME OVER');
+        $('#content').append('GAME OVER');
+        $('#content').append(`<div> Correct: ${correct}`);
+        $('#content').append(`<div> Incorrect: ${incorrect}`);
+        $('#content').append('<div> Press start to try again!');
+        $('#start').show();
+        correct = 0;
+        incorrect = 0;
+        round = false;
     },
     // checks if button press is correct
     check: function() {
@@ -98,7 +109,7 @@ var game = {
             console.log(`Incorrect: ${incorrect}`);
             isCorrect = false;
         }
-        clearInterval(clock)
+        clearInterval(clock);
         game.nextPage(); // comment out to pause the game
     },
     // show page after player win or lose
@@ -110,7 +121,7 @@ var game = {
 
         // check if answer is correct
         if (isCorrect) {
-            $('#content').append(`<img src="${triviaIMG}" alt="Win Image">`);
+            $('#content').append(`<img src="https://i.imgur.com/m6kX7LO.gif" alt="Win Image">`);
         } else {
             $('#content').append(`<img src="https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649" alt="Lose Image">`);
         }
@@ -133,24 +144,25 @@ var game = {
         triviaQuestion = Object.values(game.array[questionNum])[1];
         triviaAnswer = Object.values(game.array[questionNum])[2];
         triviaIMG = Object.values(game.array[questionNum])[3];
-        console.log(`\nRound: ${questionNum}`);
+        console.log(`\n== Round: ${questionNum} ==`);
+
         for (var i = 0; i < triviaQuestion.length; i++) {
             console.log(`${triviaQuestion[i]}`);
             $('#content').append(`<button id='option-${i}' class='option btn btn-primary btn-lg' value="${triviaQuestion[i]}">${triviaQuestion[i]}`);
         }
 
         // when player presses an option button, check if answer is correct
-        $('button').on('click', game.check);
+        $('.option').on('click', game.check);
 
         if (questionNum === game.array.length) {
             console.log('GG');
-            console.log(questionNum + '|' +     console.oog(game.array.length));
+            console.log(questionNum + '|' + game.array.length);
             clearInterval(clock);
             game.gameOver();
         } else {
             // increment to advance to next question; restart timer
             questionNum++;
-            game.startTimer();        
+            game.startTimer();
         }
     }, 
     timer: function() {
@@ -159,15 +171,20 @@ var game = {
         count--;
 
         // if count reaches 0, stop the clock, and advance to proper page
-        if (count === 0 && round === true) {
-            console.log(round)
+        if (count === 0 && questionNum === game.array.length) {
+            console.log('gameover');
+            game.gameOver();
+        } else if (count === 0 && round === true) {
+            isCorrect = false;
+            console.log(round);
             incorrect++;
-            console.log(`Times up | Incorrect: ${incorrect}`);
+            console.log(`Times up | isCorrect: ${isCorrect} | Incorrect: ${incorrect}`);
             clearInterval(clock);
             game.nextPage();
         } else if (count === 0 && round === false) {
-            console.log(round)
-            console.log(`Times up | Incorrect: ${incorrect}`);
+            isCorrect = false;
+            console.log(round);
+            console.log(`Times up | isCorrect: ${isCorrect} | Incorrect: ${incorrect}`);
             clearInterval(clock); //1
             game.nextRound();
         }
@@ -195,8 +212,6 @@ var game = {
 $(document).ready(function() {
     $('#start').on('click', game.play);
 });
-
-// 170 -> 130; error game end;
 </script>
 </body>
 </html>

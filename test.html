@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    stuff
+    <script>
+    var game = {
+    // array of game content
+    array: [
+        {
+            question: 'Which pokemon does Pikachu evolve into?',
+            option: ['mewtwo', 'pichu', 'raichu', 'pachinko'],
+            answer: 'raichu',
+            img: 'https://i.imgur.com/m6kX7LO.gif'
+        },
+        {
+            question: 'What\'s the most effective Poke Ball in the game',
+            option: ['poke ball', 'ultra ball', 'a pikachu', 'master ball'],
+            answer: 'master ball'
+        },
+        {
+            question: 'Which was the first gym leader that beated Ash?',
+            option: ['brock', 'misty', 'giovanni', 'erika'],
+            answer: 'brock'
+        },
+        {
+            question: 'Which was the first pokemon that was released from Ash?',
+            option: ['pidgeot', 'buterfree', 'pikachu', 'lapras'],
+            answer: 'buterfree'
+        },
+        {
+            question: 'How many Gym Badges must a trainer collect before challenging the Elite Four?',
+            option: ['4', '6', '8', '9'],
+            answer: '8'
+        },
+        {
+            question: 'What was the first pokemon ever created?', 
+            option: ['bulbasaur', 'charmander', 'rhydon', 'pikachu'], 
+            answer: 'rhydon'
+        },
+        {
+            question: 'Which pokemon has the same cry as Charizard in games?',
+            option: ['mewtwo', 'rhyhorn', 'dragonite', 'lugia'],
+            answer: 'rhyhorn'
+        },
+        {
+            question: 'Which pokemon is the longest one to hatch from an egg?',
+            option: ['dratini', 'onix', 'pikachu', 'venomoth'],
+            answer: 'onix'
+        },
+        {
+            question: 'Which is the lightest pokemon?',
+            option: ['metapod', 'pikachu', 'ghastly', 'caterpie'],
+            answer: 'ghastly'
+        },
+        {
+            question: 'What food do Kinglers mainly eat?',
+            option: ['pikachu', 'krabby', 'shellder', 'magikarp'],
+            answer: 'shellder'
+        }
+    ],
+    correct: 0,
+    incorrect: 0,
+    newGame: function() {
+        game.correct = 0
+    }
+}
+    console.log(game.array.length);
+    console.log(game.correct)
+    </script>
+</body>
+</html>
