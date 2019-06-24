@@ -99,7 +99,7 @@ var game = {
 
         // declare that round is not running; set interval to 3; clear content
         round = false;
-        count = 1;
+        count = 3;
         $('#content').empty();
         $('#message').empty();
         $('#game-timer').hide();
@@ -121,7 +121,7 @@ var game = {
 
         // declare that round is running, start count at 5
         round = true;
-        count = 2;
+        count = 15;
 
         // display timer and question
         $('#content').empty();
