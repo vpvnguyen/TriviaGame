@@ -1,12 +1,11 @@
 // create an object that contains game content and methods
 var game = {
-    // array of game content
+    // array of game questions, options, and answers
     array: [
         {
             question: 'Which pokemon does Pikachu evolve into?',
             option: ['MEWTWO', 'PICHU', 'RAICHU', 'SQUIRTLE'],
             answer: 'RAICHU',
-            img: 'https://i.imgur.com/m6kX7LO.gif'
         },
         {
             question: 'What\'s the most effective Poke Ball in the game',
@@ -54,19 +53,19 @@ var game = {
             answer: 'SHELLDER'
         }
     ],
+    // win or lose images after player guesses
+    winImage: './assets/images/pokemon-pikachu-dancing.gif',
+    loseImage: 'https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649',
     gameOver: function() {
         clearInterval(clock);
         $('#content').empty();
         $('#message').empty();
         $('#game-timer').hide();
         $('#content').append('<div id="game-over"> Game Over');
-        $('#content').append('<div> Press Start to try again!');
-        $('#content').append(`<div id="correct"> Correct: ${correct}`);
+        $('#content').append('<div> Press START to try again!');
+        $('#content').append(`<div id="correct" class="mt-2"> Correct: ${correct}`);
         $('#content').append(`<div id="incorrect"> Incorrect: ${incorrect}`);
         $('#start').show();
-        correct = 0;
-        incorrect = 0;
-        round = false;
     },
     // checks if button press is correct
     check: function() {
@@ -81,24 +80,26 @@ var game = {
             console.log(`Incorrect: ${incorrect}`);
             isCorrect = false;
         }
+
         clearInterval(clock);
         game.results(); // comment out to pause the game
     },
     // show page after player win or lose
     results: function() {
-        // delare that round is not running; set interval to 3; clear content
+
+        // declare that round is not running; set interval to 3; clear content
         round = false;
-        count = 1000;
+        count = 3;
         $('#content').empty();
         $('#message').empty();
         $('#game-timer').hide();
 
         // check if answer is correct
         if (isCorrect) {
-            $('#content').append(`<img src="./assets/images/pokemon-pikachu-dancing.gif" alt="Win Image">`);
+            $('#content').append(`<img src="${game.winImage}" alt="Win Image">`);
             $('#message').append('<div class="mt-5">You Are Correct!');
         } else {
-            $('#content').append(`<img src="https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649" alt="Lose Image">`);
+            $('#content').append(`<img src="${game.loseImage}" alt="Lose Image">`);
             $('#message').append(`<div class="mt-5">Sorry, the answer is ${triviaAnswer}`);
         }
 
@@ -109,13 +110,13 @@ var game = {
     round: function() {
         // declare that round is running, start count at 5
         round = true;
-        count = 1000;
+        count = 15;
 
         // display timer and question
         $('#content').empty();
         $('#message').empty();
         $('#game-timer').show();
-        $('#game-timer').text(`Time remaining: : ${count}`);
+        $('#game-timer').text(`Time remaining: ${count}`);
         $('#content').append(`<div id='question' class='mb-5'>${JSON.stringify(game.array[questionNum].question)}`);
 
         // define and loop through array of questions
@@ -126,17 +127,17 @@ var game = {
         console.log(`Question: ${triviaQuestion}`);
         console.log(`Answer: ${triviaAnswer}`);
 
+        // create options as buttons
         for (var i = 0; i < triviaQuestion.length; i++) {
-            console.log(`${triviaQuestion[i]}`);
             $('#content').append(`<li><button id='option-${i}' class='option btn btn-warning btn-lg' value="${triviaQuestion[i]}">${triviaQuestion[i]}</button>`);
         }
 
         // when player presses an option button, check if answer is correct
         $('.option').on('click', game.check);
 
+        // check if game is over
         if (questionNum === game.array.length) {
-            console.log('GG');
-            console.log(questionNum + '|' + game.array.length);
+            console.log(`${questionNum} | ${game.array.length}`);
             clearInterval(clock);
             game.gameOver();
         } else {
@@ -145,6 +146,7 @@ var game = {
             game.startTimer();
         }
     },
+
     // start counting down; choose game state when timer hits 0
     countdown: function() {
         console.log(count);
@@ -153,6 +155,7 @@ var game = {
         // if count reaches 0, stop the clock, and advance to proper page
         if (count === 0 && questionNum === game.array.length) {
             console.log('gameover');
+            incorrect++;
             game.gameOver();
         } else if (count === 0 && round === true) {
             isCorrect = false;
@@ -170,12 +173,14 @@ var game = {
         }
 
         // display time
-        $('#game-timer').text(`Time remaining: : ${count}`);
+        $('#game-timer').text(`Time remaining: ${count}`);
     },
+
     // starts a 1 sec interval
     startTimer: function() {
         clock = setInterval(game.countdown, 1000); // for every second, run timer
     },
+
     // start game; define variables
     play: function() {
         questionNum = 0;
