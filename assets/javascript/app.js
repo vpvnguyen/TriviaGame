@@ -58,6 +58,9 @@ var game = {
     // win or lose images after player guesses
     winImage: './assets/images/pokemon-pikachu-dancing.gif',
     loseImage: 'https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649',
+
+    // game functions
+    // show game over screen
     gameOver: function() {
         clearInterval(clock);
         $('#content').empty();
