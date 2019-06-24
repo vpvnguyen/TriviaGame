@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- game font -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
 
     <!-- link jquery -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"
@@ -16,12 +17,15 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <!-- game content -->
-<body>
-    <div class="container">
+<body class="bg">
+    <div class="container text-center">
         <div class="row">
-            <button id="start" type="button" class="btn btn-primary">start</button>
-            <!-- <div id="game-timer"></div> -->
-            <div id="content"></div>
+            <div class="col-md-12">
+                <button id="start" type="button" class="btn btn-primary">Start</button>
+                <!-- <div id="game-timer"></div> -->
+                <div id="content"></div>
+                <div id="message"></div>
+            </div>
         </div>
     </div>
     <!-- game Logic -->
@@ -84,10 +88,11 @@ var game = {
     gameOver: function() {
         clearInterval(clock);
         $('#content').empty();
-        $('#content').append('GAME OVER');
-        $('#content').append(`<div> Correct: ${correct}`);
-        $('#content').append(`<div> Incorrect: ${incorrect}`);
-        $('#content').append('<div> Press start to try again!');
+        $('#message').empty();
+        $('#content').append('<div id="game-over"> GAME OVER');
+        $('#content').append(`<div id="correct"> Correct: ${correct}`);
+        $('#content').append(`<div id="incorrect"> Incorrect: ${incorrect}`);
+        $('#message').text('Press start to try again!');
         $('#start').show();
         correct = 0;
         incorrect = 0;
@@ -111,16 +116,19 @@ var game = {
     },
     // show page after player win or lose
     results: function() {
-        // delare that round is not running; set interval to 3; clear content DOM
+        // delare that round is not running; set interval to 3; clear content
         round = false;
         count = 3;
         $('#content').empty();
+        $('#message').empty();
 
         // check if answer is correct
         if (isCorrect) {
-            $('#content').append(`<img src="https://i.imgur.com/m6kX7LO.gif" alt="Win Image">`);
+            $('#content').append(`<img src="./assets/images/pokemon-pikachu-dancing.gif" alt="Win Image">`);
+            $('#message').text('You Are Correct!');
         } else {
             $('#content').append(`<img src="https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649" alt="Lose Image">`);
+            $('#message').text(`Sorry, the answer is ${triviaAnswer}`);
         }
 
         // restart timer
@@ -130,10 +138,11 @@ var game = {
     round: function() {
         // declare that round is running, start count at 5
         round = true;
-        count = 5;
+        count = 1000;
 
         // display timer and question
         $('#content').empty();
+        $('#message').empty();
         $('#content').append(`<div id='game-timer' class='display-2'>00:0${count}`);
         $('#content').append(`<div id='question'>${JSON.stringify(game.array[questionNum].question)}`);
 
@@ -142,6 +151,8 @@ var game = {
         triviaAnswer = Object.values(game.array[questionNum])[2];
         triviaIMG = Object.values(game.array[questionNum])[3];
         console.log(`\n== Round: ${questionNum} ==`);
+        console.log(`Question: ${triviaQuestion}`);
+        console.log(`Answer: ${triviaAnswer}`);
 
         for (var i = 0; i < triviaQuestion.length; i++) {
             console.log(`${triviaQuestion[i]}`);
