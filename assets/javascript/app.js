@@ -1,5 +1,6 @@
 // create an object that contains game content and methods
 var game = {
+
     // array of game questions, options, and answers
     array: [
         {
@@ -53,6 +54,7 @@ var game = {
             answer: 'SHELLDER'
         }
     ],
+
     // win or lose images after player guesses
     winImage: './assets/images/pokemon-pikachu-dancing.gif',
     loseImage: 'https://media1.tenor.com/images/84c4e8c1a24b84bece745d2dcd2a5aa8/tenor.gif?itemid=5220649',
@@ -67,10 +69,10 @@ var game = {
         $('#content').append(`<div id="incorrect"> Incorrect: ${incorrect}`);
         $('#start').show();
     },
+
     // checks if button press is correct
     check: function() {
         buttonVal = $(this).attr('value');
-
         if (buttonVal === triviaAnswer) {
             correct++;
             console.log(`Correct: ${correct}`);
@@ -80,10 +82,10 @@ var game = {
             console.log(`Incorrect: ${incorrect}`);
             isCorrect = false;
         }
-
         clearInterval(clock);
         game.results(); // comment out to pause the game
     },
+
     // show page after player win or lose
     results: function() {
 
@@ -108,6 +110,7 @@ var game = {
     },
     // advance to next round
     round: function() {
+
         // declare that round is running, start count at 5
         round = true;
         count = 15;
@@ -149,8 +152,8 @@ var game = {
 
     // start counting down; choose game state when timer hits 0
     countdown: function() {
-        console.log(count);
         count--;
+        console.log(count);
 
         // if count reaches 0, stop the clock, and advance to proper page
         if (count === 0 && questionNum === game.array.length) {
@@ -159,14 +162,12 @@ var game = {
             game.gameOver();
         } else if (count === 0 && round === true) {
             isCorrect = false;
-            console.log(round);
             incorrect++;
             console.log(`Times up | isCorrect: ${isCorrect} | Incorrect: ${incorrect}`);
             clearInterval(clock);
             game.results();
         } else if (count === 0 && round === false) {
             isCorrect = false;
-            console.log(round);
             console.log(`Times up | isCorrect: ${isCorrect} | Incorrect: ${incorrect}`);
             clearInterval(clock);
             game.round();
