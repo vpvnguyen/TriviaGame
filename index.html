@@ -10,7 +10,6 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- game font -->
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
-
     <!-- link jquery -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
@@ -21,7 +20,13 @@
     <div class="container text-center">
         <div class="row">
             <div class="col-md-12">
-                <div id="message">Pokemon Trivia Game</div>
+                <img src="./assets/images/pokemon_logo.png" alt="">
+                <div id="message">
+                    <p class="intro mt-5">Test your Pokemon knowledge with this Trivia Game</p>
+                    <p class="intro">You have 15 seconds to correctly guess the correct answer</p>
+                    <p class="intro">Are you a Pokemon Master?</p>
+                    <p class="intro">Press Start to Play!</p>
+                </div>
                 <button id="start" type="button" class="btn btn-primary">Start</button>
                 <div id="game-timer"></div>
                 <div id="content"></div>
@@ -35,24 +40,24 @@ var game = {
     array: [
         {
             question: 'Which pokemon does Pikachu evolve into?',
-            option: ['mewtwo', 'pichu', 'raichu', 'pachinko'],
-            answer: 'raichu',
+            option: ['MEWTWO', 'PICHU', 'RAICHU', 'SQUIRTLE'],
+            answer: 'RAICHU',
             img: 'https://i.imgur.com/m6kX7LO.gif'
         },
         {
             question: 'What\'s the most effective Poke Ball in the game',
-            option: ['poke ball', 'ultra ball', 'a pikachu', 'master ball'],
-            answer: 'master ball'
+            option: ['POKE BALL', 'ULTRA BALL', 'SUPER BALL', 'MASTER BALL'],
+            answer: 'MASTER BALL'
         },
         {
             question: 'Which was the first gym leader that beated Ash?',
-            option: ['brock', 'misty', 'giovanni', 'erika'],
-            answer: 'brock'
+            option: ['BROCK', 'MISTY', 'GIOVANNI', 'ERIKA'],
+            answer: 'BROCK'
         },
         {
             question: 'Which was the first pokemon that was released from Ash?',
-            option: ['pidgeot', 'buterfree', 'pikachu', 'lapras'],
-            answer: 'buterfree'
+            option: ['PIDGEOT', 'BUTERFREE', 'CHARIZARD', 'LAPRAS'],
+            answer: 'BUTERFREE'
         },
         {
             question: 'How many Gym Badges must a trainer collect before challenging the Elite Four?',
@@ -61,28 +66,28 @@ var game = {
         },
         {
             question: 'What was the first pokemon ever created?', 
-            option: ['bulbasaur', 'charmander', 'rhydon', 'pikachu'], 
-            answer: 'rhydon'
+            option: ['BULBASAUR', 'CHARMANDER', 'RHYDON', 'PIKACHU'], 
+            answer: 'RHYDON'
         },
         {
             question: 'Which pokemon has the same cry as Charizard in games?',
-            option: ['mewtwo', 'rhyhorn', 'dragonite', 'lugia'],
-            answer: 'rhyhorn'
+            option: ['MEWTWO', 'RHYHORN', 'DRAGONITE', 'LUGIA'],
+            answer: 'RHYHORN'
         },
         {
             question: 'Which pokemon is the longest one to hatch from an egg?',
-            option: ['dratini', 'onix', 'pikachu', 'venomoth'],
-            answer: 'onix'
+            option: ['DRATINI', 'ONIX', 'CATERPIE', 'VENOMOTH'],
+            answer: 'ONIX'
         },
         {
             question: 'Which is the lightest pokemon?',
-            option: ['metapod', 'pikachu', 'ghastly', 'caterpie'],
-            answer: 'ghastly'
+            option: ['METAPOD', 'PIKACHU', 'GHASTLY', 'CATERPIE'],
+            answer: 'GHASTLY'
         },
         {
             question: 'What food do Kinglers mainly eat?',
-            option: ['pikachu', 'krabby', 'shellder', 'magikarp'],
-            answer: 'shellder'
+            option: ['PIKACHU', 'KRABBY', 'SHELLDER', 'MAGIKARP'],
+            answer: 'SHELLDER'
         }
     ],
     gameOver: function() {
