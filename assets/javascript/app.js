@@ -80,13 +80,18 @@ var game = {
             correct++;
             console.log(`Correct: ${correct}`);
             isCorrect = true;
+            clearInterval(clock);
+            game.results(); // comment out to pause the game
         } else {
             incorrect++;
             console.log(`Incorrect: ${incorrect}`);
             isCorrect = false;
+            clearInterval(clock);
+            game.results(); // comment out to pause the game
         }
-        clearInterval(clock);
-        game.results(); // comment out to pause the game
+        if (questionNum === game.array.length) {
+            game.gameOver();
+        }
     },
 
     // show page after player win or lose
@@ -94,7 +99,7 @@ var game = {
 
         // declare that round is not running; set interval to 3; clear content
         round = false;
-        count = 3;
+        count = 1;
         $('#content').empty();
         $('#message').empty();
         $('#game-timer').hide();
@@ -116,7 +121,7 @@ var game = {
 
         // declare that round is running, start count at 5
         round = true;
-        count = 15;
+        count = 2;
 
         // display timer and question
         $('#content').empty();
@@ -162,6 +167,7 @@ var game = {
         if (count === 0 && questionNum === game.array.length) {
             console.log('gameover');
             incorrect++;
+            console.log(incorrect)
             game.gameOver();
         } else if (count === 0 && round === true) {
             isCorrect = false;
